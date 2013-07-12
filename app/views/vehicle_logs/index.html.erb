@@ -1,0 +1,23 @@
+<h1>Listing vehicle_logs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Plate</th>
+      <th>Timestamp</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @vehicle_logs.each do |vehicle_log| %>
+      <tr>
+        <td><%= vehicle_log.plate %></td>
+        <td><%= vehicle_log.timestamp %></td>
+        <td><%= link_to 'Destroy', vehicle_log, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
