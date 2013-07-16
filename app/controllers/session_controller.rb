@@ -1,24 +1,35 @@
 class SessionController < ApplicationController
 	def new
-		render :check_login if logged_in?
 	end
 
 	def login
+		u = session[:user_id]
+		unless(u.nil?)
+			puts "Status: #{u}"
+		else
+			puts "Status: nil"
+		end
+
 		unless logged_in?
 			params = session_params
-			puts "Params: #{params}"
 			user = User.find_by(username: params[:username])
-			puts "User: #{user.username}"
 			if user && user.authenticate(params[:password])
 				puts "Authenticated"
 				session[:user_id] = user.id
+				session[:isAdmin] = user.isAdmin
+				redirect_to :check_login
+			else
+				AdminLog.create(alert_type: 3, message: "Someone failed to login [#{request.remote_ip}]", from: "session#login")
+				puts "Not authenticated"
+				flash[:alert] = "Authentication failed"
+				redirect_to :login
 			end
+		else
+			redirect_to :check_login
 		end
-		render :check_login
 	end
 
 	def logout
-		session[:user_id] = nil
 		session.destroy
 		redirect_to check_login_path
 	end
@@ -30,7 +41,8 @@ class SessionController < ApplicationController
 		def session_params
 			params.require(:session).permit(:username, :password)
 		end
+
 		def logged_in?
-			session[:user_id] != nil
+			!session[:user_id].nil?
 		end
 end

@@ -1,3 +1,4 @@
+<% javascript 'users_form' %>
 <%= form_for(@user) do |f| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
@@ -12,10 +13,14 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :username %><br>
-    <%= f.text_field :username %><br>
-    <%= f.label :passwd %><br>
-    <%= f.password_field :passwd %>
+    <%= f.label :username %>
+    <% if session[:isAdmin] || session[:isAdmin].nil? %>
+      <%= f.text_field :username%> <br>
+    <% else %>
+      <%= f.text_field :username, disabled: true%> <br>
+    <% end %>
+    <%= f.label :passwd %>
+    <%= f.password_field :passwd %> <br>
   </div>
   <div class="actions">
     <%= f.submit %>

@@ -1,13 +1,14 @@
-<% if session[:user_id] != nil %>
+<% unless session[:user_id].nil? %>
 	<% uu = User.find(session[:user_id]) %>
 	<h1>Logged in as <%= uu.username %></h1>
-	<% if uu.isAdmin %>
+	<% if session[:isAdmin] %>
 		You are an Admin. <br />
 	<% end %>
-	<%= link_to "logout", logout_path %>
+	<%= link_to "logout", logout_path %> |
+	<%= link_to "users", users_path %>
 <% else %>
 	<h1>Not logged in</h1>
-	<script type="text/javascript">
-    	window.location.href= "<%= login_path.to_s %>"
-  	</script>
+	<script>
+		window.location.replace("<%= login_path %>")
+	</script>
 <% end %>

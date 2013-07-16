@@ -1,6 +1,11 @@
-<h1>Editing user</h1>
+<h1>Editing <%= @user.name %></h1>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
+<%= form_tag user_topup_path(user_id: @user.id) do %>
+<%= label_tag "amount", "Enter amount wanted:" %>
+<%= number_field_tag "amount", 0, in: 1..100 %>
+<%= submit_tag "Top up!"%>
+<% end %>
+
+<%= link_to 'Back', @user %>

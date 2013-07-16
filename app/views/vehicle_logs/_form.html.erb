@@ -1,3 +1,5 @@
+<%= image_tag("/plates/#{@vehicle_log.timestamp}@#{@vehicle_log.plate}.jpeg") %>
+
 <%= form_for(@vehicle_log) do |f| %>
   <% if @vehicle_log.errors.any? %>
     <div id="error_explanation">
@@ -12,11 +14,11 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :plate %><br>
+    <%= f.label :plate %>
     <%= f.text_field :plate %>
   </div>
   <div class="field">
-    <%= f.label :timestamp %><br>
+    <%= f.label :timestamp %>
     <%= f.text_field :timestamp %>
   </div>
   <div class="actions">

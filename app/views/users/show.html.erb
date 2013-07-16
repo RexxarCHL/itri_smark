@@ -2,10 +2,21 @@
 
 <p>
   <strong>Username:</strong>
-  <%= @user.username %>
-  <strong>Passwd:</strong>
-  <%= @user.passwd %>
-</p>
+  <%= @user.username %> <br>
+  <strong>Quota:</strong>
+  <%= @user.quota %> <br>
 
+  <strong>Recent Logs:</strong>
+  <ul>
+  	<% VehicleLog.where(plate: @user.getPlates).limit(5).order("created_at desc").each do |log| %>
+ 	<li><%= log.plate %>, <%= time_ago_in_words Time.at(log.timestamp.to_i) %> ago</li>
+ 	<% end %>
+  </ul>
+
+</p>
 <%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<%= link_to 'Manage Plates', user_plates_path(user_id: params[:id]) %> |
+<% if  session[:isAdmin] %>
+<%= link_to 'Back', users_path %> |
+<% end %>
+<%= link_to 'Log out', logout_path %>

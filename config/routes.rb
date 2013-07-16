@@ -1,7 +1,13 @@
 Smark::Application.routes.draw do
-  resources :users
+  resources :admin_logs
 
-  resources :vehicle_logs, only: [:index, :create, :destroy]
+  resources :users do
+    resources :vehicle_logs, only: :index
+    resources :plates, only: [:index, :new, :create, :destroy]
+    match 'topup', to: 'payment#topup', via: [:post]
+  end
+
+  resources :vehicle_logs, only: [:index, :create, :update, :edit, :destroy]
 
   resources :session, only: [:new, :create, :destroy]
   match '/signup', to: 'users#new', via: :get

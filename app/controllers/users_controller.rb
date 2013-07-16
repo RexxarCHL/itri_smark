@@ -4,12 +4,22 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    if session[:user_id].nil?
+      redirect_to check_login_path
+    elsif session[:isAdmin]
+      @users = User.all
+    else
+      redirect_to user_path(id: session[:user_id])
+    end
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
+    unless params[:id].to_i == session[:user_id] || session[:isAdmin]
+      AdminLog.create(alert_type: 2, message: "Someone failed to authenticate [#{request.remote_ip}]", from: "users#show")
+      render file: 'public/401.html', status: :unauthorized
+    end
   end
 
   # GET /users/new
@@ -72,6 +82,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :passwd)
+      params.require(:user).permit(:username, :passwd, :new_plate)
     end
 end

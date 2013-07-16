@@ -1,10 +1,14 @@
 require 'bcrypt'
 
 class User < ActiveRecord::Base
+	has_many :plates, dependent: :destroy
+
 	validates :username, uniqueness: true
 	validates :passwd, presence: true
 
 	before_save { self.username.downcase! }
+
+	alias_attribute :name, :username
 
 	include BCrypt
 
@@ -23,7 +27,21 @@ class User < ActiveRecord::Base
 		self.password == attempt_password
 	end
 
-	def name
-		@username
+	def new_plate
 	end
+
+	def update(params)
+		self.username = params[:username] if params[:username]
+		self.password = params[:passwd] unless params[:passwd].empty?
+		self.save
+	end
+
+    def getPlates
+      plates = self.plates
+      plateNos = []
+      plates.each do |p|
+        plateNos << p.plateNo
+      end
+      plateNos
+    end
 end
