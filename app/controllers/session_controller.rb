@@ -16,8 +16,9 @@ class SessionController < ApplicationController
 			if user && user.authenticate(params[:password])
 				puts "Authenticated"
 				session[:user_id] = user.id
+				session[:username] = user.name
 				session[:isAdmin] = user.isAdmin
-				redirect_to :check_login
+				redirect_to root_path
 			else
 				AdminLog.create(alert_type: 3, message: "Someone failed to login [#{request.remote_ip}]", from: "session#login")
 				puts "Not authenticated"
@@ -31,7 +32,7 @@ class SessionController < ApplicationController
 
 	def logout
 		session.destroy
-		redirect_to check_login_path
+		redirect_to check_login
 	end
 
 	def check_login

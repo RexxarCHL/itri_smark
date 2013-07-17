@@ -8,4 +8,6 @@
 <%= submit_tag "Top up!"%>
 <% end %>
 
-<%= link_to 'Back', @user %>
+<%= content_for :sidebar do %>
+	<li><%= link_to 'Back', @user %></li>
+<% end %>

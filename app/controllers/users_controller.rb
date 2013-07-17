@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-
+  layout :resolve_layout
   # GET /users
   # GET /users.json
   def index
@@ -41,10 +41,10 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to login_path, notice: '<strong>Success!</strong><br>You can login with your new account now'.html_safe }
         format.json { render action: 'show', status: :created, location: @user }
       else
-        format.html { render action: 'new' }
+        format.html { render action: 'new', layout: "index" }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
@@ -83,5 +83,14 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:username, :passwd, :new_plate)
+    end
+
+    def resolve_layout
+      case action_name
+      when 'new'
+        "index"
+      else
+        "layout_with_sidebar"
+      end
     end
 end

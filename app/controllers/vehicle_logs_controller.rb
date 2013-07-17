@@ -2,13 +2,19 @@ class VehicleLogsController < ApplicationController
   before_action :set_vehicle_log, only: [:show, :edit, :update, :destroy]
   skip_before_filter :verify_authenticity_token, only: [:create]
 
+  layout "layout_with_sidebar"
   # GET /vehicle_logs
   def index
-    if(session[:isAdmin])
-      @vehicle_logs = VehicleLog.all
-    else
+    if session[:isAdmin]
+      @vehicle_logs = VehicleLog.all.order("timestamp desc")
+    elsif session[:user_id]
       user = User.find(session[:user_id])
-      puts "User #{user.name} tried to access vehicle logs but unsuccessed."
+      AdminLog.create(alert_type: 2, message: "User #{user.name} tried to access vehicle logs but unsuccessed.",
+                       link: "#", from: "vehicle_log#index")
+      render file: 'public/401.html', status: 401
+    else
+      AdminLog.create(alert_type: 2, message: "Someone from #{request.remote_ip} tried to access vehicle logs but unsuccessed.",
+                       link: "#", from: "vehicle_log#index")
       render file: 'public/401.html', status: 401
     end
   end
@@ -30,7 +36,7 @@ class VehicleLogsController < ApplicationController
   # PATCH/PUT /vehicle_log/1
   def update
     if @vehicle_log.update(vehicle_log_params)
-      redirect_to @vehicle_log, notice: 'Admin log was successfully updated.'
+      redirect_to @vehicle_log, notice: 'vehicle log was successfully updated.'
     else
       render action: 'edit'
     end

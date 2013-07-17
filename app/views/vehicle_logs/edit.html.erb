@@ -2,5 +2,6 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @vehicle_log %> |
-<%= link_to 'Back', vehicle_logs_path %>
+<%= content_for :sidebar do %>
+	<li><%= link_to 'Back', vehicle_logs_path %></li>
+<% end %>

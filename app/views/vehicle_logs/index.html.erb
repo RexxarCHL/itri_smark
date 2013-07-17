@@ -1,24 +1,30 @@
+<%= javascript "vehicle_logs" %>
 <h1>Listing vehicle_logs</h1>
 
-<table>
+<table class="table table-bordered table-hover">
   <thead>
     <tr>
       <th>Plate</th>
       <th>Timestamp</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th colspan="2">Methods</th>
     </tr>
   </thead>
 
   <tbody>
     <% @vehicle_logs.each do |vehicle_log| %>
       <tr>
-        <td><%= vehicle_log.plate %></td>
-        <td><%= vehicle_log.timestamp %></td>
+        <td class="plate <%= vehicle_log.plate %>"><%= vehicle_log.plate %></td>
+        <% time =  Time.at vehicle_log.timestamp.to_i %>
+        <td class="timestamp"><%= time %>(<%= time_ago_in_words time %> ago)</td>
         <td><%= link_to 'Destroy', vehicle_log, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <td><%= link_to 'Edit', edit_vehicle_log_path(id: vehicle_log.id) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<%= content_for :sidebar do %>
+  <li><%= link_to "Refresh", vehicle_logs_path %></li>
+  <li><a href="#" class="search">Search Plate</a><div class="search-bar content-hidden"><%= search_field_tag "search-plate" %></div></li>
+  <li><a href="#" id="reset">Reset search</a></li>
+<% end %>
