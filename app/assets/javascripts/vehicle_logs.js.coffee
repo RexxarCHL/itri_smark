@@ -2,9 +2,6 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).ready ->
-	$('a').click (event)->
-		event.stopPropagation()
-		event.preventDefault()
 	$('a.search').click (event)->
 		event.stopPropagation()
 		event.preventDefault()
@@ -12,6 +9,8 @@ $(document).ready ->
 		$('input').select()
 		$('td.plate').parent().removeClass('content-hidden')
 	$('#reset').click (event)->
+		event.stopPropagation()
+		event.preventDefault()
 		inputs = $('div>input')
 		inputs.val ''
 		inputs.trigger 'blur'

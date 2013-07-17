@@ -1,0 +1,75 @@
+<% javascript "admin_logs" %>
+<h1>Listing Admin Logs</h1>
+
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Type</th>
+      <th>Message</th>
+      <th>Link</th>
+      <th>From</th>
+      <th>At</th>
+      <th colspan="2">Methods</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @admin_logs.each do |admin_log| %>
+      <tr class="entry alert_type_<%= admin_log.alert_type %>">
+        <td><%= admin_log.id %></td>
+        <td><%= admin_log.alert_type %></td>
+        <td><%= admin_log.message %></td>
+        <td>
+          <% link = admin_log.link %>
+          <% if link.nil? or link.empty? %>
+            N/A
+          <% else %>
+            <%= link_to 'View log', admin_log.link %>
+          <% end %>
+        </td>
+        <td><%= admin_log.from %></td>
+        <td><%= time_ago_in_words admin_log.created_at %> ago</td>
+        <td><%= link_to 'Show', admin_log %></td>
+        <td><%= link_to 'Destroy', admin_log, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= content_for :sidebar do %>
+  <li><%= link_to 'New Admin log', new_admin_log_path %></li>
+  <li>Type: <%= select_tag "alert_type", "<option value='0'>0</option><option value='1'>1</option><option value='2'>2</option><option value='3'>3</option><option value='4' selected>All</option>".html_safe %></li>
+  <li>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <td>Type</td>
+          <td>Meaning</td>
+        </tr>
+      </thead>
+      
+      <tbody>
+        <tr>
+          <td>0</td>
+          <td>Plate problem</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Payment problem</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Authentication problem</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Login Problem</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+<% end %>
+

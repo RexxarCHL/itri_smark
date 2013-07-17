@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @admin_log.alert_type %>
+</p>
+
+<p>
+  <strong>Message:</strong>
+  <%= @admin_log.message %>
+</p>
+
+<p>
+  <strong>Link:</strong>
+  <%= @admin_log.link %>
+</p>
+
+<p>
+  <strong>From:</strong>
+  <%= @admin_log.from %>
+</p>
+
+<%= content_for :sidebar do %>
+	<li><%= link_to 'Edit', edit_admin_log_path(@admin_log) %></li>
+	<li><%= link_to 'Back', admin_logs_path %></li>
+<% end %>
+

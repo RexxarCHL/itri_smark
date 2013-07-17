@@ -1,0 +1,26 @@
+<h1>Add a New Plate</h1>
+
+<%= form_for [User.find(params[:user_id]), Plate.new] do |f| %>
+	<% if @plate.errors.any? %>
+		<div id="error_explanation">
+			<h2><%= pluralize(@plate.errors.count, "error") %> prohibited this plate from being saved:</h2>
+
+			<ul>
+				<% @plate.errors.full_messages.each do |msg| %>
+					<li><%= msg %></li>
+				<% end %>
+			</ul>
+		</div>
+	<% end %>
+	<div class="field">
+		<%= f.label :plateNo, "Plate #" %>
+		<%= f.text_field :plateNo %> <br>
+	</div>
+	<div class="action">
+		<%= f.submit %>
+	</div>
+<% end %>
+
+<%= content_for :sidebar do %>
+	<li><%= link_to 'Back', user_path(id: params[:user_id]) %></li>
+<% end %>

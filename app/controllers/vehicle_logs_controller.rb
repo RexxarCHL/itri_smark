@@ -10,11 +10,11 @@ class VehicleLogsController < ApplicationController
     elsif session[:user_id]
       user = User.find(session[:user_id])
       AdminLog.create(alert_type: 2, message: "User #{user.name} tried to access vehicle logs but unsuccessed.",
-                       link: "#", from: "vehicle_log#index")
+                      from: "vehicle_log#index")
       render file: 'public/401.html', status: 401
     else
       AdminLog.create(alert_type: 2, message: "Someone from #{request.remote_ip} tried to access vehicle logs but unsuccessed.",
-                       link: "#", from: "vehicle_log#index")
+                      from: "vehicle_log#index")
       render file: 'public/401.html', status: 401
     end
   end

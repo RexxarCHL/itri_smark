@@ -3,5 +3,6 @@
 <%= render 'form' %>
 
 <%= content_for :sidebar do %>
+	<li><%= link_to 'Admin logs', admin_logs_path %></li>
 	<li><%= link_to 'Back', vehicle_logs_path %></li>
 <% end %>
